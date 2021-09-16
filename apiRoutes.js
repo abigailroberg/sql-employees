@@ -75,6 +75,34 @@ router.post('/roles', ({ body }, res) => {
             data: body
         })
     })
-})  
+})
+
+// employee routes
+    // view all employees
+router.get('/employees', (req, res) => {
+    const sql = 
+    `SELECT e.id, 
+        e.first_name, 
+        e.last_name, 
+        roles.title AS role_title, 
+        departments.name AS department, 
+        roles.salary, 
+        CONCAT(m.first_name, ' ', m.last_name) AS manager
+    FROM employees e
+    JOIN roles ON e.role_id = roles.id
+    JOIN departments ON roles.department_id = departments.id
+    LEFT JOIN employees m ON m.id = e.manager_id`
+
+    db.query(sql, (err, rows) => {
+        if(err) {
+            res.status(500).json({ error: err.message })
+            return
+        }
+        res.json({
+            message: 'success',
+            data: rows
+        })
+    })
+})
 
 module.exports = router
