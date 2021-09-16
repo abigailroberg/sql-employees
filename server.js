@@ -1,3 +1,4 @@
+const db = require('./db/connection')
 const express = require('express')
 
 const PORT = process.env.PORT || 3001
@@ -12,6 +13,11 @@ app.use((req, res) => {
     res.status(404).end()
 })
 
-app.listen(PORT, () => {
-    console.log(`Now listening on port ${PORT}!`)
+// connect to DB and start server
+db.connect(err => {
+    if(err) throw err
+    console.log('Database connected')
+    app.listen(PORT, () => {
+        console.log(`Now listening on port ${PORT}!`)
+    })
 })
