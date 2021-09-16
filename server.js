@@ -1,5 +1,6 @@
 const db = require('./db/connection')
 const express = require('express')
+const apiRoutes = require('./routes/apiRoutes/departments')
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -7,6 +8,9 @@ const app = express()
 // express middleware
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
+// use apiRoutes
+app.use('/api', apiRoutes)
 
 // default response for route not found
 app.use((req, res) => {
