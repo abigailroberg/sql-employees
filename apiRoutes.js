@@ -1,23 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const db = require('./db/connection')
+const cTable = require('console.table')
 
 // department routes
     // view all departments
-router.get('/departments', (req, res) => {
+const viewDpts = function() {
+    console.log('prompt function running')
     const sql = `SELECT * FROM departments`
-
+    
     db.query(sql, (err, rows) => {
-        if(err) {
-            res.status(500).json({ error: err.message })
-            return
-        }
-        res.json({
-            message: 'success',
-            data: rows
-        })
+        if(err) throw err
+        console.table(rows)
     })
-})
+}
+    
 
     // add a department
 router.post('/departments', ({ body }, res) => {
@@ -147,4 +144,16 @@ router.put('/employees/:id', (req, res) => {
     })
   })
 
-module.exports = router
+const viewAll = function() {
+    const sql = `SELECT * FROM departments`
+    
+    db.query(sql, (err, rows) => {
+        if(err) throw err
+        console.table(rows)
+    })
+}
+
+module.exports = {
+    router,
+    viewAll
+}
