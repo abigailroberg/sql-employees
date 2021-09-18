@@ -31,7 +31,8 @@ const viewAllRoles = function() {
         roles.salary
     FROM roles
     JOIN departments
-    ON roles.department_id = departments.id`
+    ON roles.department_id = departments.id
+    ORDER BY roles.id`
 
     db.query(sql, (err, rows) => {
         if(err) throw err
@@ -102,15 +103,23 @@ const updateEmp = function(employee_id, role_id) {
 
     // function to get department id from department name
     const getDptId = function(dpt_name) {
+        // set sql query & params
         const sql = `SELECT id
-                     FROM departments
-                     WHERE name = ?`
+                    FROM departments
+                    WHERE name =?`
         const params = [dpt_name]
 
-        db.query(sql, params, (err, result) => {
-            if (err) throw err
-            const answer = result[0].id
-            console.log(answer)
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, params, (err, result) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                result = result[0].id
+                resolve(result)                
+            })
         })
     }
 
@@ -157,7 +166,7 @@ const updateEmp = function(employee_id, role_id) {
 
         db.query(sql, params, (err, result) => {
             if(err) throw err
-            console.log(result)
+            console.log(result.json())
         })
     }
 

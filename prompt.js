@@ -1,3 +1,4 @@
+const { response } = require('express')
 const e = require('express')
 const inquirer = require('inquirer')
 const {
@@ -89,9 +90,14 @@ const prompt = function() {
             ]).then(function(answer) {
                 const roleName = answer.roleName
                 const roleSalary = answer.roleSalary
-                const departmentId = getDptId('Finance')
-                console.log(departmentId)
-                addRole(roleName, roleSalary, 5)
+                getDptId('Finance')
+                    .then(response => {
+                        const dptId = response
+                        addRole(roleName, roleSalary, dptId)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
                 // show menu again
                 return prompt()
             })
