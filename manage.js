@@ -144,15 +144,23 @@ const updateEmp = function(employee_id, role_id) {
 
     // function to get role id from role title
     const getRoleId = function(role_title) {
+        // set sql query & params
         const sql = `SELECT id
                      FROM roles
                      WHERE title = ?`
         const params = [role_title]
 
-        db.query(sql, params, (err, result) => {
-            if (err) throw err
-            const answer = result[0].id
-            console.log(answer)
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, params, (err, result) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                result = result[0].id
+                resolve(result)                
+            })
         })
     }
 

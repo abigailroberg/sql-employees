@@ -130,9 +130,14 @@ const prompt = function() {
             .then(function(answer) {
                 const firstName = answer.firstName
                 const lastName = answer.lastName
-                const roleId = getRoleId(answer.role)
-                const mgrId = getEmpId(answer.manager)
-                addEmp(firstName, lastName, 4, 2)
+                getRoleId(answer.role)
+                    .then(response => {
+                        const roleId = response
+                        addEmp(firstName, lastName, roleId, 2)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
                 // show menu again
                 return prompt()
             })
