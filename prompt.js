@@ -8,7 +8,12 @@ const {
     viewAllEmps,
     addEmp,
     updateEmp,
-    getDptId
+    getDptId,
+    getDpts,
+    getRoleId,
+    getRoles,
+    getEmpId,
+    getEmpNames
 } = require('./manage')
 
 // function to launch inquirer prompts 

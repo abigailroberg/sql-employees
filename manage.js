@@ -99,6 +99,7 @@ const updateEmp = function(employee_id, role_id) {
 }
 
 // helper functions
+
     // function to get department id from department name
     const getDptId = function(dpt_name) {
         const sql = `SELECT id
@@ -108,7 +109,66 @@ const updateEmp = function(employee_id, role_id) {
 
         db.query(sql, params, (err, result) => {
             if (err) throw err
-            console.log(result[0].id)
+            const answer = result[0].id
+            console.log(answer)
+        })
+    }
+
+    // function to get list of departments
+    const getDpts = function() {
+        const sql = `SELECT name FROM departments`
+
+        db.query(sql, (err, result) => {
+            if(err) throw err
+            console.log(result)
+        })
+    }
+
+    // function to get role id from role title
+    const getRoleId = function(role_title) {
+        const sql = `SELECT id
+                     FROM roles
+                     WHERE title = ?`
+        const params = [role_title]
+
+        db.query(sql, params, (err, result) => {
+            if (err) throw err
+            const answer = result[0].id
+            console.log(answer)
+        })
+    }
+
+    // function to get list of roles
+    const getRoles = function() {
+        const sql = `SELECT title FROM roles`
+
+        db.query(sql, (err, result) => {
+            if(err) throw err
+            console.log(result)
+        })
+    }
+
+    // function to get employee id from employee name
+    const getEmpId = function(name) {
+        const sql = `SELECT id
+                    FROM employees
+                    WHERE CONCAT(first_name, ' ', last_name) = ?`
+        const params =[name]
+
+        db.query(sql, params, (err, result) => {
+            if(err) throw err
+            console.log(result)
+        })
+    }
+
+    // function to get list of employee names
+    const getEmpNames = function() {
+        const sql = `SELECT CONCAT(first_name, ' ', last_name) AS name
+                    FROM employees`
+        
+        db.query(sql, (err, result) => {
+            if (err) throw err
+            console.log(result)
         })
     }
 
@@ -120,5 +180,10 @@ module.exports = {
     viewAllEmps,
     addEmp,
     updateEmp,
-    getDptId
+    getDptId,
+    getDpts,
+    getRoleId,
+    getRoles,
+    getEmpId,
+    getEmpNames
 }
