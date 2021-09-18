@@ -19,7 +19,6 @@ const {
 
 // function to launch inquirer prompts 
 const prompt = function() {
-    console.log('prompt function running')
     return inquirer.prompt([
         {
             type: 'list',

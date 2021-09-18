@@ -125,11 +125,20 @@ const updateEmp = function(employee_id, role_id) {
 
     // function to get list of departments
     const getDpts = function() {
+        // set sql query
         const sql = `SELECT name FROM departments`
 
-        db.query(sql, (err, result) => {
-            if(err) throw err
-            console.log(result)
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, (err, results) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                results = results.map(row => row.name)
+                resolve(results)
+            })
         })
     }
 
