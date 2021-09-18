@@ -124,7 +124,7 @@ const prompt = function() {
                     type: 'list',
                     name: 'manager',
                     message: 'Please select the manager for the new employee:',
-                    choices: ['John Smith', 'Jane Brown']
+                    choices: ['John Doe', 'Jane Brown']
                 }
             ])
             .then(function(answer) {
@@ -158,7 +158,7 @@ const prompt = function() {
                     type: 'list',
                     name: 'employee',
                     message: 'Which employee would you like to update?',
-                    choices: ['John Smith', 'Jane Brown']
+                    choices: ['Tom Anderson', 'Jane Brown']
                 },
                 {
                     type: 'list',
@@ -168,9 +168,25 @@ const prompt = function() {
                 }
             ])
             .then(function(answer) {
-                const employeeId = getEmpId(answer.employee)
-                const roleId = getRoleId(answer.role)
-                updateEmp(1, 4)
+                let roleId
+                let empId
+                getRoleId(answer.role)
+                    .then(response => {
+                        roleId = response
+                        console.log(`Desired role id is ${roleId}`)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                getEmpId(answer.employee)
+                    .then(response => {
+                        empId = response
+                        console.log(`Employee id is ${empId}`)
+                        updateEmp(empId, roleId)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
                 // show menu again
                 return prompt()
             })
