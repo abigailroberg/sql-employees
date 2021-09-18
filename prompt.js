@@ -130,10 +130,19 @@ const prompt = function() {
             .then(function(answer) {
                 const firstName = answer.firstName
                 const lastName = answer.lastName
+                let roleId
+                let mgrId
                 getRoleId(answer.role)
                     .then(response => {
-                        const roleId = response
-                        addEmp(firstName, lastName, roleId, 2)
+                        roleId = response
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                getEmpId(answer.manager)
+                    .then(response => {
+                        mgrId = response
+                        addEmp(firstName, lastName, roleId, mgrId)
                     })
                     .catch(error => {
                         console.log(error)

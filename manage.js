@@ -166,38 +166,65 @@ const updateEmp = function(employee_id, role_id) {
 
     // function to get list of roles
     const getRoles = function() {
+        // set sql query
         const sql = `SELECT title FROM roles`
 
-        db.query(sql, (err, result) => {
-            if(err) throw err
-            console.log(result)
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, (err, results) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                results = results.map(row => row.title)
+                resolve(results)
+            })
         })
     }
 
     // function to get employee id from employee name
     const getEmpId = function(name) {
+        // set sql query & params
         const sql = `SELECT id
                     FROM employees
                     WHERE CONCAT(first_name, ' ', last_name) = ?`
-        const params =[name]
+        const params = [name]
 
-        db.query(sql, params, (err, result) => {
-            if(err) throw err
-            console.log(result.json())
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, params, (err, result) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                result = result[0].id
+                resolve(result)                
+            })
         })
     }
 
     // function to get list of employee names
     const getEmpNames = function() {
+        // set sql query
         const sql = `SELECT CONCAT(first_name, ' ', last_name) AS name
                     FROM employees`
-        
-        db.query(sql, (err, result) => {
-            if (err) throw err
-            console.log(result)
+
+        // create promise
+        return new Promise((resolve, reject) => {
+            // call the database
+            db.query(sql, (err, results) => {
+                if(err) {
+                    reject(err)
+                    return
+                }
+                results = results.map(row => row.name)
+                resolve(results)
+            })
         })
     }
-
+    
 module.exports = {
     viewAllDpts,
     addDpt,
