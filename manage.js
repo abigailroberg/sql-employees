@@ -41,7 +41,8 @@ const viewAllRoles = function() {
 
 // function to add a role
 const addRole = function(title, salary, department_id) {
-    const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
+    const sql = `INSERT INTO roles (title, salary, department_id) 
+                VALUES (?, ?, ?)`
     const params = [title, salary, department_id]
 
     db.query(sql, params, (err, result) => {
@@ -97,6 +98,20 @@ const updateEmp = function(employee_id, role_id) {
     })
 }
 
+// helper functions
+    // function to get department id from department name
+    const getDptId = function(dpt_name) {
+        const sql = `SELECT id
+                     FROM departments
+                     WHERE name = ?`
+        const params = [dpt_name]
+
+        db.query(sql, params, (err, result) => {
+            if (err) throw err
+            console.log(result[0].id)
+        })
+    }
+
 module.exports = {
     viewAllDpts,
     addDpt,
@@ -104,5 +119,6 @@ module.exports = {
     addRole,
     viewAllEmps,
     addEmp,
-    updateEmp
+    updateEmp,
+    getDptId
 }
