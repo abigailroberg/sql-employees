@@ -31,22 +31,30 @@ const prompt = function() {
                 'Add a Role',
                 'View All Employees',
                 'Add an Employee',
-                'Update an Employee Role'
+                'Update an Employee Role',
+                'Quit'
             ]
         }
     ])
     // perform desired function
     .then(({ choice }) => {
         if(choice === 'View All Departments') {
-            return viewAllDpts()
+            viewAllDpts()
+            // show menu again
+            prompt()
         }
         else if (choice === 'View All Roles') {
-            return viewAllRoles()
+            viewAllRoles()
+            // show menu again
+            prompt()
         }
         else if(choice === 'View All Employees') {
-            return viewAllEmps()
+            viewAllEmps()
+            // show menu again
+            prompt()
         }
         else if(choice === 'Add a Department') {
+            // prompt for department name to add
              return inquirer.prompt([
                 {
                     type: 'input',
@@ -56,8 +64,11 @@ const prompt = function() {
             ]).then(function(answer) {
                 addDpt(answer.dptName)
             })
+            // show menu again
+            .then(prompt())
         }
         else if(choice === 'Add a Role') {
+            // prompt for role info needed to add
             return inquirer.prompt([
                 {
                     type: 'input',
@@ -81,8 +92,11 @@ const prompt = function() {
                 console.log(departmentId)
                 addRole(roleName, roleSalary, 5)
             })
+            // show menu again
+            .then(prompt())
         }
         else if(choice === 'Add an Employee') {
+            // prompt for info needed to add an employee
             return inquirer.prompt([
                 {
                     type: 'input',
@@ -100,6 +114,35 @@ const prompt = function() {
                 const lastName = answer.lastName
                 addEmp(firstName, lastName, 4, 2)
             })
+            // show menu again
+            .then(prompt())
+        }
+        else if(choice === 'Update an Employee Role') {
+            // prompt for info needed to update employee role
+            return inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employeeId',
+                    message: 'Which employee would you like to update?',
+                    choices: ['John Smith', 'Jane Brown']
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: 'What role would you like to assign?',
+                    choices: ['Finance Employee', 'Finance Manager']
+                }
+            ])
+            .then(function(answer) {
+                const employeeId = getEmpId(answer.employeeId)
+                const roleId = getRoleId(answer.roleId)
+                updateEmp(1, 4)
+            })
+            // show menu again
+            .then(prompt())
+        }
+        else if(choice === 'Quit') {
+            return
         }
     })
 }
