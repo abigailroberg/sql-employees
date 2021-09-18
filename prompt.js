@@ -41,17 +41,17 @@ const prompt = function() {
         if(choice === 'View All Departments') {
             viewAllDpts()
             // show menu again
-            prompt()
+            return prompt()
         }
         else if (choice === 'View All Roles') {
             viewAllRoles()
             // show menu again
-            prompt()
+            return prompt()
         }
         else if(choice === 'View All Employees') {
             viewAllEmps()
             // show menu again
-            prompt()
+            return prompt()
         }
         else if(choice === 'Add a Department') {
             // prompt for department name to add
@@ -63,9 +63,9 @@ const prompt = function() {
                 }
             ]).then(function(answer) {
                 addDpt(answer.dptName)
+                // show menu again
+                return prompt()
             })
-            // show menu again
-            .then(prompt())
         }
         else if(choice === 'Add a Role') {
             // prompt for role info needed to add
@@ -81,9 +81,10 @@ const prompt = function() {
                     message: 'What is the salary for this role?'
                 },
                 {
-                    type: 'input',
+                    type: 'list',
                     name: 'dptName',
-                    message: 'Which department would you like to add this Role to?'
+                    message: 'Which department would you like to add this Role to?',
+                    choices: ['Finance', 'Marketing']
                 }
             ]).then(function(answer) {
                 const roleName = answer.roleName
@@ -91,9 +92,9 @@ const prompt = function() {
                 const departmentId = getDptId('Finance')
                 console.log(departmentId)
                 addRole(roleName, roleSalary, 5)
+                // show menu again
+                return prompt()
             })
-            // show menu again
-            .then(prompt())
         }
         else if(choice === 'Add an Employee') {
             // prompt for info needed to add an employee
@@ -107,43 +108,55 @@ const prompt = function() {
                     type: 'input',
                     name: 'lastName',
                     message: 'What is the last name of the employee you would like to add?'
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'Please select the appropriate role for the new employee:',
+                    choices: ['Finance Employee', 'Finance Manager']
+                },
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'Please select the manager for the new employee:',
+                    choices: ['John Smith', 'Jane Brown']
                 }
             ])
             .then(function(answer) {
                 const firstName = answer.firstName
                 const lastName = answer.lastName
+                const roleId = getRoleId(answer.role)
+                const mgrId = getEmpId(answer.manager)
                 addEmp(firstName, lastName, 4, 2)
+                // show menu again
+                return prompt()
             })
-            // show menu again
-            .then(prompt())
         }
         else if(choice === 'Update an Employee Role') {
             // prompt for info needed to update employee role
             return inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'employeeId',
+                    name: 'employee',
                     message: 'Which employee would you like to update?',
                     choices: ['John Smith', 'Jane Brown']
                 },
                 {
                     type: 'list',
-                    name: 'roleId',
+                    name: 'role',
                     message: 'What role would you like to assign?',
                     choices: ['Finance Employee', 'Finance Manager']
                 }
             ])
             .then(function(answer) {
-                const employeeId = getEmpId(answer.employeeId)
-                const roleId = getRoleId(answer.roleId)
+                const employeeId = getEmpId(answer.employee)
+                const roleId = getRoleId(answer.role)
                 updateEmp(1, 4)
+                // show menu again
+                return prompt()
             })
-            // show menu again
-            .then(prompt())
         }
-        else if(choice === 'Quit') {
-            return
-        }
+        else return
     })
 }
 
