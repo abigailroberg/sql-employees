@@ -90,7 +90,7 @@ const prompt = function() {
             ]).then(function(answer) {
                 const roleName = answer.roleName
                 const roleSalary = answer.roleSalary
-                getDptId('Finance')
+                getDptId(answer.dptName)
                     .then(response => {
                         const dptId = response
                         addRole(roleName, roleSalary, dptId)
