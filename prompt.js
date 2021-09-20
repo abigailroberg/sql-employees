@@ -18,7 +18,10 @@ const {
 } = require('./manage')
 
 // function to launch inquirer prompts 
-const prompt = function() {
+const prompt =  async function() {
+    const dpts = await getDpts()
+    const roles = await getRoles()
+    const employeeNames = await getEmpNames()
     return inquirer.prompt([
         {
             type: 'list',
@@ -84,7 +87,7 @@ const prompt = function() {
                     type: 'list',
                     name: 'dptName',
                     message: 'Which department would you like to add this Role to?',
-                    choices: ['Finance', 'Marketing']
+                    choices: dpts
                 }
             ]).then(function(answer) {
                 const roleName = answer.roleName
@@ -118,13 +121,13 @@ const prompt = function() {
                     type: 'list',
                     name: 'role',
                     message: 'Please select the appropriate role for the new employee:',
-                    choices: ['Finance Employee', 'Finance Manager']
+                    choices: roles
                 },
                 {
                     type: 'list',
                     name: 'manager',
                     message: 'Please select the manager for the new employee:',
-                    choices: ['John Doe', 'Jane Brown']
+                    choices: employeeNames
                 }
             ])
             .then(function(answer) {
@@ -158,13 +161,13 @@ const prompt = function() {
                     type: 'list',
                     name: 'employee',
                     message: 'Which employee would you like to update?',
-                    choices: ['Tom Anderson', 'Jane Brown']
+                    choices: employeeNames
                 },
                 {
                     type: 'list',
                     name: 'role',
                     message: 'What role would you like to assign?',
-                    choices: ['Finance Employee', 'Finance Manager']
+                    choices: roles
                 }
             ])
             .then(function(answer) {
